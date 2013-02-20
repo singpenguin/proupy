@@ -1,0 +1,71 @@
+$def with(tempItem,list_libs,pageno,pagecount,tags,rand_news)
+$:render.header(tempItem)
+
+	<div id="googlead">
+		<img src="$config.static/images/singpenguin.jpg" alt="singpenguin"/>
+	</div>
+
+	<div id="container">
+		<div id="sidebar">
+			$:render.search_form()
+			<div id="comment">
+				<header>为您推荐</header>
+				$for news in rand_news:
+					<p><a href="/news/$news['_id']" target="_blank">$news['title']</a></p>
+			</div>
+			<div id="tagcloud">
+			$if tags:
+				<h3>标签云</h3>
+				<p>
+				$for tag in tags:
+					<a href="/tag/$tag">$tag</a>
+				</p>
+			</div>
+			<div id="google_translate_element"></div>
+		</div>
+
+		<div id="contentbox">
+			$for lib in list_libs:
+				<div class="item">
+					<h2><a href="/$tempItem/$lib['_id']" target="_blank">$lib['name']</a></h2>
+					<span>$lib['desc']</span>
+				</div>
+
+			<footer>
+				<p id="pagenumber">
+				$if pagecount < 7:
+					$for x in range(1,pagecount+1):
+						$if x==pageno:
+							<a class="pagenow">$pageno</a>
+						$else:
+							<a href="/$tempItem/page/$x">$x</a>
+				$else:
+					$if 3 < pageno < pagecount-3:
+						<a href="/$tempItem/page/1">1</a>...
+						<a href="/$tempItem/page/$(pageno-1)">$(pageno-1)</a>
+						<a class="pagenow">$pageno</a>
+						<a href="/$tempItem/page/$(pageno+1)">$(pageno+1)</a>
+						<a href="/$tempItem/page/$(pageno+2)">$(pageno+2)</a>...
+						<a href="/$tempItem/page/$pagecount">$pagecount</a>
+					$elif pageno >= pagecount-3:
+						<a href="/$tempItem/page/1">1</a>...
+						$for x in range(pagecount-4,pagecount+1):
+							$if x==pageno:
+								<a class="pagenow">$pageno</a>
+							$else:
+								<a href="/$tempItem/page/$x">$x</a>
+					$else:
+						$for x in range(1,6):
+							$if x==pageno:
+								<a class="pagenow">$pageno</a>
+							$else:
+								<a href="/$tempItem/page/$x">$x</a>
+						...&nbsp;&nbsp;&nbsp;<a href="/$tempItem/page/$pagecount">$pagecount</a>
+				</p>
+			</footer>
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	$:render.footer()
+

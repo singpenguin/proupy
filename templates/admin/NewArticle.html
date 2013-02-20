@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>简单的管理后台</title>
+<style>
+	form li {
+		display: block;
+		margin: 10px;
+	}
+</style>
+</head>
+
+<body>
+	<h3>添加用户</h3>
+	<form action="/admin/author/new" method="post">
+		<ol style="list-style:none;margin:0;padding:0;">
+			<li>
+				<label>作者</label>
+				<input name="author"/>
+				<span>填写作者名字</span>
+			</li>
+			<li>
+				<label>作者网址</label>
+				<input name="author_url"/>
+				<span>填写网址</span>
+			</li>
+			<li>
+				<label>作者描述</label>
+				<input name="author_desc"/>
+			</li>
+			<li>
+				<input type="submit" name="submit" value="提交"/>
+			</li>
+		</ol>
+	</form>
+	<h3>添加文章</h3>
+	<form name="example" action="/admin/article/new" method="post">
+		<ol style="list-style:none;margin:0;padding:0;">
+			<li>
+				<label>作者</label>
+				<input name="author"/>
+				<span>*</span>
+			</li>
+			<li>
+				<label>原始出处描述</label>
+				<input name="original_desc"/>
+				<span>一般填写原始出处的网站名字，仅有描述，页面不显示</span>
+			</li>
+			<li>
+				<label>原始出处网址</label>
+				<input name="original_src"/>
+			</li>
+			<li>
+				<label>标题</label>
+				<input name="title" style="width:300px;"/>
+				<span>*</span>
+			</li>
+			<li>
+				<label>内容</label>
+				<textarea name="content1" style="width:700px;height:300px;"></textarea>
+				<span>*</span>
+			</li>
+			<li>
+				<label>摘要</label>
+				<textarea name="post_summary" style="width:700px;height:200px"></textarea>
+				<span>*</span>
+			</li>
+			<li>
+				<label>状态</label>
+				<input name="post_status" value="publish"/>
+				<span>可填publish,private</span>
+			</li>
+			<li>
+				<label>是否可评论</label>
+				<input name="comment_status" value="open"/>
+				<span>可填open,close</span>
+			</li>
+			<li>
+				<label>标签</label>
+				<input name="tag" />
+				<span>标签以逗号分隔</span>
+			</li>
+			<li>
+				<input type="submit" name="submit" value="提交"/>
+			</li>
+		</ol>
+	</form>
+	<h3>添加开源类库和框架</h3>
+	<form action="/admin/libs/new" method="post">
+		<ol style="list-style:none;margin:0;padding:0;">
+			<li>
+				<label>名字</label>
+				<input name="lib_name"/>
+				<span>填写项目名字</span>
+			</li>
+			<li>
+				<label>网址</label>
+				<input name="lib_url"/>
+				<span>填写网址</span>
+			</li>
+			<li>
+				<label>描述</label>
+				<textarea name="lib_desc" style="width:500px;height:200px;"></textarea>
+			</li>
+			<li>
+				<label>内容</label>
+				<textarea name="lib_content" style="width:500px;height:200px;"></textarea>
+			</li>
+			<li>
+				<label>类型</label>
+				<input type="radio" name="lib_type" value = "lib">lib</input>
+				<input type="radio" name="lib_type" value = "framework">framework</input>
+			</li>
+			<li>
+				<input type="submit" name="submit" value="提交"/>
+			</li>
+		</ol>
+	</form>
+	<h3>修改文章</h3>
+	<form action="/admin/article/edit" method="post">
+		<ol style="list-style:none;margin:0;padding:0;">
+			<li>
+				<label>文章ID</label>
+				<input name="artID"/>
+				<span>填写文章ID</span>
+			</li>
+			<li>
+				<input type="submit" name="submit" value="提交"/>
+			</li>
+		</ol>
+	</form>
+	<h3>上传文件<span style="font-size:12px;color:#999;">文件将上传到static/本年/本月 文件夹下面</span></h3>
+	<form id="form1" enctype="multipart/form-data" method="post" action="/admin/upload">
+		<ol style="list-style:none;margin:0;padding:0;">
+			<li>
+				<label for="fileToUpload">请选择要上传的文件</label>
+				<input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();"/>
+			</li>
+			<li id="fileName"></li>
+			<li id="fileSize"></li>
+			<li id="fileType"></li>
+			<li id="progressNumber"></li>
+			<li>
+				<input type="button" onclick="uploadFile()" value="上传" id="btnUpload"/>
+			</li>
+		</ol>
+	</form>
+	<script type="text/javascript" src="$config.static/js/fileUpload.js" charset="utf-8"></script>
+	<h3>添加网络好文</h3>
+	<form action="/admin/netart/new" method="post">
+		<ol style="list-style:none;margin:0;padding:0;">
+			<li>
+				<label>作者</label>
+				<input name="author"/>
+				<span>*</span>
+			</li>
+			<li>
+				<label>作者URL</label>
+				<input name="authorUrl"/>
+				<span>如zhicheng95</span>
+			</li>
+			<li>
+				<label>原始出处描述</label>
+				<input name="original_desc"/>
+				<span>一般填写原始出处的网站名字，仅有描述，页面不显示</span>
+			</li>
+			<li>
+				<label>原始出处网址</label>
+				<input name="original_src"/>
+			</li>
+			<li>
+				<label>标题</label>
+				<input name="title" style="width:300px;"/>
+				<span>*</span>
+			</li>
+			<li>
+				<label>内容</label>
+				<textarea name="content1" style="width:700px;height:300px;"></textarea>
+				<span>*</span>
+			</li>
+			<li>
+				<label>发表日期</label>
+				<input name="post_date"/>
+				<span>如：2012-02-01 12:56:30</span>
+			</li>
+			<li>
+				<label>状态</label>
+				<input name="post_status" value="publish"/>
+				<span>可填publish,private</span>
+			</li>
+			<li>
+				<label>是否可评论</label>
+				<input name="comment_status" value="open"/>
+				<span>可填open,close</span>
+			</li>
+			<li>
+				<label>标签</label>
+				<input name="tag" />
+				<span>标签以逗号分隔</span>
+			</li>
+			<li>
+				<input type="submit" name="submit" value="提交"/>
+			</li>
+		</ol>
+	</form>
+</body>
+</html>

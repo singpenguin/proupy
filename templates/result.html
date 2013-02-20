@@ -1,0 +1,47 @@
+$def with(name,list_news,author_info,pageno,pagecount,tags,rand_news)
+$:render.header("")
+
+	<div id="googlead">
+		<img src="$config.static/images/sea.jpg" alt="singpenguin"/>
+	</div>
+
+	<div id="container">
+		<div id="sidebar">
+			$:render.search_form()
+			
+			<div id="comment">
+				<header>为您推荐</header>
+				$for news in rand_news:
+					<p><a href="/news/$news['_id']" target="_blank">$news['title']</a></p>
+			</div>
+			<div id="tagcloud">
+			$if tags:
+				<h3>标签云</h3>
+				<p>
+				$for tag in tags:
+					<a href="/tag/$tag">$tag</a>
+				</p>
+			</div>
+			<div id="google_translate_element"></div>
+		</div>
+
+		<div id="contentbox">
+			$if author_info:
+				$ tempItem = 'author'
+				<h2>$name的文章列表</h2>
+			$else:
+				$ tempItem = 'tag'
+				<h2>$name</h2>
+			$for news in list_news:
+				<div class="item">
+					<h2><a href="/news/$news['_id']" target="_blank">$news['title']</a></h2>
+					<span>发布于：$news['date'].strftime('%Y-%m-%d %H:%M:%S') , $news['click']次阅读 , $news['cmt_count']条评论</span>
+				</div>
+
+			$:render.pagenumber(name,tempItem,pageno,pagecount)
+		</div>
+		<div class="clear"></div>
+	</div>
+
+	$:render.footer()
+

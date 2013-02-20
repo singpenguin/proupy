@@ -1,0 +1,109 @@
+$def with(news,comments,pageno,pagecount,tags,mingyan)
+$:render.header("index")
+	
+	<div id="intro">
+		<p>$mingyan</p>
+	</div>
+	
+	<div id="container">
+
+		<div id="sidebar">
+			$:render.search_form()
+			$if comments:
+				<div id="comment">
+					<p class="comment_title"><strong>最新评论</strong><a href="/news/cmts" target="_blank">更多&gt;&gt;</a></p>
+				$for cmt in comments:
+					<p>
+						$if len(cmt['content']) > 40:
+							$cmt['content'][:40] ... 
+						$else:
+							$cmt['content']
+						 <a href="/news/$cmt['postid']#cmt$cmt['_id']" target="_blank">#$cmt['author']</a>
+					</p>
+				</div>
+			<div id="tagcloud">
+			$if tags:
+				<h3>标签云</h3>
+				<p>
+				$for tag in tags:
+					<a href="/tag/$tag">$tag</a>
+				</p>
+			</div>
+			<div id="google_translate_element"></div>
+			<div>
+				<h3>友情链接</h3>
+				<p><a href="http://simple-is-better.com" target="_blank">python.cn (news,jobs)</a></p>
+				<p><a href="https://groups.google.com/group/python-cn/" target="_blank">Python邮件列表</a></p>
+				<p><a href="http://www.douban.com/group/web.py/" target="_blank">豆瓣web.py小组</a></p>
+				<p><a href="http://www.qingbiji.cn" target="_blank">轻笔记</a></p>
+				<p><a href="http://ikugle.taobao.com" target="_blank">青青的爱酷阁</a></p>
+			</div>
+		</div>
+
+		<div id="content">
+			$for i,article in enumerate(news):
+					$if i == 0:
+						<div class="post" style="margin-top:0px">
+					$else:
+						<div class="post">
+					<header>
+						<h2><a href="/news/$article['_id']" target="_blank">$article['title']</a></h2>
+						<p class="metastuff">
+							<span>作者：<a href="/author/$article['author']" target="_blank">$article['author']</a></span>
+							<span class="post-time"> | 发表于: $article['date'].strftime('%Y-%m-%d %H:%M:%S')</span>
+						</p>
+					</header>
+					<div class="postbody">
+						$:article['summary']
+					</div>
+					<div class="postfooter">
+						<p>
+						$if article['keywords']:
+							$ keywords = article['keywords'].split(",")
+							<span>标签: 
+							$for tag in keywords:
+								<a href="/tag/$tag">$tag</a>
+							</span>
+						<span class="fn-right"><a href="/news/$article['_id']#read" target="_blank">阅读($article['click'])</a> | <a href="/news/$article['_id']#commentshow" target="_blank">评论($article['cmt_count'])</a> | <a href="/news/$article['_id']#addcmt" target="_blank">发表评论&gt;&gt;</a></span>
+						</p>
+					</div>
+				</div>
+			
+			<footer>
+				<p id="pagenumber">
+				$if pagecount < 7:
+					$for x in range(1,pagecount+1):
+						$if x==pageno:
+							<a class="pagenow">$pageno</a>
+						$else:
+							<a href="/news/page/$x">$x</a>
+				$else:
+					$if 3 < pageno < pagecount-3:
+						<a href="/news/page/1">1</a>...
+						<a href="/news/page/$(pageno-1)">$(pageno-1)</a>
+						<a class="pagenow">$pageno</a>
+						<a href="/news/page/$(pageno+1)">$(pageno+1)</a>
+						<a href="/news/page/$(pageno+2)">$(pageno+2)</a>...
+						<a href="/news/page/$pagecount">$pagecount</a>
+					$elif pageno >= pagecount-3:
+						<a href="/news/page/1">1</a>...
+						$for x in range(pagecount-4,pagecount+1):
+							$if x==pageno:
+								<a class="pagenow">$pageno</a>
+							$else:
+								<a href="/news/page/$x">$x</a>
+					$else:
+						$for x in range(1,6):
+							$if x==pageno:
+								<a class="pagenow">$pageno</a>
+							$else:
+								<a href="/news/page/$x">$x</a>
+						...&nbsp;&nbsp;&nbsp;<a href="/news/page/$pagecount">$pagecount</a>
+				</p>
+			</footer>
+		</div>
+		
+	</div>
+
+	$:render.footer()
+

@@ -1,0 +1,33 @@
+$def with(name,tempItem,pageno,pagecount)
+			<footer>
+				<p id="pagenumber">
+				$if pagecount < 7:
+					$for x in range(1,pagecount+1):
+						$if x==pageno:
+							<a class="pagenow">$pageno</a>
+						$else:
+							<a href="/$tempItem/$name/page/$x">$x</a>
+				$else:
+					$if 3 < pageno < pagecount-3:
+						<a href="/$tempItem/$name/page/1">1</a>...
+						<a href="/$tempItem/$name/page/$(pageno-1)">$(pageno-1)</a>
+						<a class="pagenow">$pageno</a>
+						<a href="/$tempItem/$name/page/$(pageno+1)">$(pageno+1)</a>
+						<a href="/$tempItem/$name/page/$(pageno+2)">$(pageno+2)</a>...
+						<a href="/$tempItem/$name/page/$pagecount">$pagecount</a>
+					$elif pageno >= pagecount-3:
+						<a href="/$tempItem/$name/page/1">1</a>...
+						$for x in range(pagecount-4,pagecount+1):
+							$if x==pageno:
+								<a class="pagenow">$pageno</a>
+							$else:
+								<a href="/$tempItem/$name/page/$x">$x</a>
+					$else:
+						$for x in range(1,6):
+							$if x==pageno:
+								<a class="pagenow">$pageno</a>
+							$else:
+								<a href="/$tempItem/$name/page/$x">$x</a>
+						...&nbsp;&nbsp;&nbsp;<a href="/$tempItem/$name/page/$pagecount">$pagecount</a>
+				</p>
+			</footer>

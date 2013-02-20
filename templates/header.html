@@ -1,0 +1,37 @@
+$def with(selected)
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="keywords" content="Python,web.py,Django,教程,框架,类库,开源" />
+	<meta property="wb:webmaster" content="a1968893ce533321"/>
+	<meta property="qc:admins" content="35664373075016375"/>
+	<meta name="google-site-verification" content="tmJsOhDvLjvTsJHJWfkxAqzLGciraD9s_EN2lNlsono" />
+	<title>$config.title</title>
+	<link href="$config.static/css/style.css" rel="stylesheet" type="text/css"/>
+	<link href="$config.static/css/reset.css" rel="stylesheet" type="text/css"/>
+	<link href="$config.static/css/highlight.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+	<div id="header">
+		<h1><a href="/">Proupy</a></h1>
+	</div>
+	<div id="nav">
+		<p>
+		$if selected == "index":
+			<a href="/" class="selected">首页</a>
+		$else:
+			<a href="/">首页</a>
+		$if selected == "libs":
+			<a href="/libs" class="selected">类库</a>
+		$else:
+			<a href="/libs">类库</a>
+		$if selected == "framework":
+			<a href="/framework" class="selected">框架</a>
+		$else:
+			<a href="/framework">框架</a>
+		<a href="/feed" class="subscribe"></a>
+		</p>
+	</div>

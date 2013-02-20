@@ -1,0 +1,137 @@
+$def with(article,comments,tags,rand_news,isNet="")
+$:render.header("news")
+
+	<div id="googlead">
+		<img src="$config.static/images/sea.jpg" alt="会唱歌的企鹅"/>
+	</div>
+
+	<div id="container">
+
+		<div id="sidebar">
+			$:render.search_form()
+			<div id="comment">
+				<h3>为您推荐</h3>
+				$for news in rand_news:
+					<p><a href="/news/$news['_id']" target="_blank">$news['title']</a></p>
+			</div>
+			<div id="tagcloud">
+			$if tags:
+				<h3>标签云</h3>
+				<p>
+				$for tag in tags:
+					<a href="/tag/$tag">$tag</a>
+				</p>
+			</div>
+			<div id="google_translate_element"></div>
+		</div>
+
+		<div id="contentbox">
+			<div>
+				<header>
+					<h2 class="title">$article['title']</h2>
+					<p class="metastuff">
+						作者: <a href="/author/$article['author']">$article['author']</a>     
+						<span class="post-time"> | 发表于: $article['date'].strftime('%Y-%m-%d %H:%M:%S')</span><br/>
+						$if article['original_url']:
+							<span class="original_src">原始出处：<a href="$article['original_url']" target="_blank">
+							$if article['original_desc']:
+								$article['original_desc']
+							$else:
+								$article['original_src']
+							</a></span>
+					</p>
+				</header>
+				<div id="wenzhang">
+					$:article['content'].replace("$config.static", "/static")
+				</div>
+				<div id="dingcai">
+					<p>
+					<a href="javascript::" id="a_ding" rel="nofollow" onclick="ding_cai_clickHandler(1)">$article['ding']</a>
+					<a href="javascript::" id="a_cai" rel="nofollow" onclick="ding_cai_clickHandler(0)">$article['cai']</a>
+					</p>
+				</div>
+				<div class="postfooter postfooter_news">
+					<p>
+					$if article['keywords']:
+						$ keywords = article['keywords'].split(",")
+						<span>标签: 
+						$for tag in keywords:
+							<a href="/tag/$tag">$tag</a>
+						</span>
+					<span class="fn-right"><a id="read"></a>阅读($article['click']) | <a id="commentshow"></a>评论($article['cmt_count']) | <a href="#addcmt">发表评论&gt;&gt;</a></span>
+					</p>
+				</div>
+			</div>
+			<div id="jiathis_style_32x32" class="sociable">
+				<a class="jiathis_button_tsina"></a>
+				<a class="jiathis_button_tqq"></a>
+				<a class="jiathis_button_douban"></a>
+				<a class="jiathis_button_qzone"></a>
+				<a class="jiathis_button_fb"></a>
+				<a class="jiathis_button_twitter"></a>
+				<a class="jiathis_button_linkedin"></a>
+				<a class="jiathis_button_renren"></a>
+				<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+				<a class="jiathis_counter_style"></a>
+			</div>
+			
+			<div>
+			$if comments:
+				$for cmt in comments:
+					<a id="cmt$cmt['_id']"></a>
+					<div class="commentbox">
+						<div class="commentcontent">
+							<strong>
+							$if cmt['url']:
+								<a href="$cmt['url']" rel="nofollow" target="_blank">$cmt['author']</a>
+							$else:
+								$cmt['author']
+							</strong>
+							<span class="commentdate">$cmt['date'].strftime('%Y-%m-%d %H:%M:%S')</span>
+							<pre>$cmt['content']</pre>
+						</div>
+						<div class="comment_avatar">
+							<img src="$cmt['email'].replace('$config.static', '/static')" alt="$cmt['author']"/>
+						</div>
+						<div class="clear"></div> 
+					</div>
+			</div>
+
+			<div id="addcommet">
+				<a id="addcmt"></a>
+				<h3>发表评论</h3><span class="post-time">请勿刷屏或发垃圾广告哦，会被加入黑名单的</span>
+					$if isNet:
+						<form action="/$isNet/$article['_id']/comment" method="post">
+					$else:
+						<form action="/news/$article['_id']/comment" method="post">
+					<ol>
+						<li>
+							<label>昵称</label>
+							<input class="formtext" name="name" id="name" required placeholder="Your nick name"/>
+							<span>*</span>
+						</li>
+						<li>
+							<label>邮箱</label>
+							<input class="formtext" name="email" id="email" type="email" required placeholder="Your Email"/>
+							<span>*</span>
+						</li>
+						<li>
+							<label>网站</label>
+							<input class="formtext" name="url" type="url" value="http://" placeholder="Your Website"/>
+						</li>
+						<li>
+							<textarea name="message"id="message" required></textarea>
+							<span>*</span>
+						</li>
+						<li>
+							<input id="submit" name="submit" type="submit" value="提交" onclick="JavaScript:return VerifyMessage()"/>
+						</li>
+					</ol>
+				</form>
+			</div><!--addcommet-->
+		</div>
+		<div class="clear"></div>
+		<script type="text/javascript" src="$config.static/js/default.js" charset="utf-8"></script>
+	</div>
+
+	$:render.footer()

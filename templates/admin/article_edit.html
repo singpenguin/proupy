@@ -1,0 +1,84 @@
+$def with(obj)
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>修改文章 - $obj['title']</title>
+<style>
+	form li {
+		display: block;
+		margin: 10px;
+	}
+</style>
+</head>
+
+<body>
+	<form name="example" action="/admin/article/edit" method="post">
+		<ol style="list-style:none;margin:0;padding:0;">
+			<li>
+				<label>ID</label>
+				<input name="artID1" value="$obj['_id']"/>
+			</li>
+			<li>
+				<label>作者</label>
+				<input name="author" value="$obj['author']"/>
+				<span>*</span>
+			</li>
+			<li>
+				<label>原始出处描述</label>
+				<input name="original_desc" value="$obj['original_desc']"/>
+				<span>一般填写原始出处的网站名字，仅有描述，页面不显示</span>
+			</li>
+			<li>
+				<label>原始出处网址</label>
+				<input name="original_src" value="$obj['original_url']"/>
+			</li>
+			<li>
+				<label>标题</label>
+				<input name="title" style="width:300px;" value="$obj['title']"/>
+				<span>*</span>
+			</li>
+			<li>
+				<label>内容</label>
+				<textarea name="content1" style="width:700px;height:300px;">$obj['content']</textarea>
+				<span>*</span>
+			</li>
+			<li>
+				<label>摘要</label>
+				<textarea name="post_summary" style="width:700px;height:200px">$obj['summary']</textarea>
+				<span>*</span>
+			</li>
+			<li>
+				<label>状态</label>
+				<input name="post_status" value="$obj['status']"/>
+				<span>可填publish,private</span>
+			</li>
+			<li>
+				<label>是否可评论</label>
+				<input name="comment_status" value="$obj['cmt_status']"/>
+				<span>可填open,close</span>
+			</li>
+			<li>
+				<label>标签</label>
+				<input name="tag" value="$obj['keywords']"/>
+				<span>标签以逗号分隔</span>
+			</li>
+			<li>
+				<label>点击数</label>
+				<input name="click" value="$obj['click']"/>
+			</li>
+			<li>
+				<label>顶</label>
+				<input name="ding" value="$obj['ding']"/>
+			</li>
+			<li>
+				<label>踩</label>
+				<input name="cai" value="$obj['cai']"/>
+			</li>
+			<li>
+				<input type="submit" name="submit" value="提交"/>
+			</li>
+		</ol>
+	</form>
+</body>
+</html>
