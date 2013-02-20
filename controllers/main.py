@@ -1,13 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
+
 import web,sys
-from config.settings import db
-from config.settings import col_ids
-from config.settings import col_post
-from config.settings import col_comment
-from config.settings import col_author
-from config.settings import render
-from config.settings import config
+from config.settings import db,render,config
 from models import base
 import random
 
@@ -16,8 +11,6 @@ sys.setdefaultencoding('utf8')
 
 class Index:
 	def GET(self):
-		if base.isRefuseIP(web.ctx.ip):
-			raise web.seeother(config.url+"/404")
 		s = unicode(random.choice(base.mingyan), 'gbk')
 		config.title = 'Proupy.com'
 		return render.index(base.newsCache[0:6],
@@ -27,8 +20,6 @@ class Index:
 
 class ArticlePage:
 	def GET(self, id):
-		if base.isRefuseIP(web.ctx.ip):
-			raise web.seeother(config.url+"/404")
 		id = int(id)
 		arc = db[col_post].find_one({'_id':id,'status':'publish','cmt_status':'open'})
 		if arc:
@@ -54,8 +45,6 @@ class ArticlePage:
 
 class CommentAdd:
 	def POST(self, id):
-		if base.isRefuseIP(web.ctx.ip):
-			raise web.seeother(config.url+"/404")
 		id = int(id)
 		i = web.input(name='',email='',url=None,message='')
 		if i.name and i.message and i.email:
@@ -78,10 +67,8 @@ class CommentAdd:
 		referer = web.ctx.env.get('HTTP_REFERER', config.url)
 		return web.seeother(referer)
 
-class newsPage:
+class NewsPageList:
 	def GET(self, id):
-		if base.isRefuseIP(web.ctx.ip):
-			raise web.seeother(config.url+"/404")
 		#这里需要注意一下传递过来的ID为unicode类型，需要转换一下
 		n = int(id)
 		if n < 4:
@@ -100,8 +87,6 @@ class newsPage:
 
 class Author:
 	def GET(self, name):
-		if base.isRefuseIP(web.ctx.ip):
-			raise web.seeother(config.url+"/404")
 		#查询到数据后才继续下面
 		list_news = db[col_post].find({'author':name,'status':'publish','cmt_status':'open'}).sort('date',-1).limit(10)
 		if not list_news:
@@ -116,10 +101,8 @@ class Author:
 		return render.result(name,list_news,"123",1,pagecount,
 					base.tag_cache,rand_news)
 
-class AuthorPage:
+class AuthorPageList:
 	def GET(self,name,id):
-		if base.isRefuseIP(web.ctx.ip):
-			raise web.seeother(config.url+"/404")
 		n = int(id)
 		#查询到数据后才继续下面
 		list_news = db[col_post].find({'author':name,'status':'publish','cmt_status':'open'}).sort('date',-1).skip((n-1)*10).limit(10)
@@ -134,8 +117,6 @@ class AuthorPage:
 
 class Comments:
 	def GET(self, id=1):
-		if base.isRefuseIP(web.ctx.ip):
-			raise web.seeother(config.url+"/404")
 		#所有的评论
 		id = int(id)
 		cmts = list(db[col_comment].find().sort('date',-1).skip((id-1)*10).limit(10))
@@ -154,10 +135,8 @@ class Comments:
 		config.title = '最新评论'
 		return render.news_cmts(cmts,id,pagecount,base.tag_cache,rand_news)
 
-class tag:
+class TagView:
 	def GET(self,name):
-		if base.isRefuseIP(web.ctx.ip):
-			raise web.seeother(config.url+"/404")
 		list_news = db[col_post].find({'keywords':{'$regex':name,'$options':'i'},'status':'publish','cmt_status':'open'}).sort('date',-1).limit(10)
 		if not list_news:
 			#404
@@ -168,10 +147,8 @@ class tag:
 		config.title = name + '下面的所有文章'
 		return render.result(name,list_news,'',1,pagecount,base.tag_cache,rand_news)
 
-class tagPage:
+class TagPageList:
 	def GET(self,name,id):
-		if base.isRefuseIP(web.ctx.ip):
-			raise web.seeother(config.url+"/404")
 		n = int(id)
 		list_news = db[col_post].find({'keywords':{'$regex':name,'$options':'i'},'status':'publish','cmt_status':'open'}).sort('date',-1).skip((n-1)*10).limit(10)        
 		if not list_news:
@@ -183,7 +160,7 @@ class tagPage:
 		config.title = name + '下面的所有文章'
 		return render.result(name,list_news,'',n,pagecount,base.tag_cache,rand_news)
 
-class notFound:
+class NotFound:
 	def GET(self):
 		return render.not_found()
 
@@ -192,10 +169,8 @@ class other:
 		raise web.seeother(config.url+"/404")
 
 #控制顶和踩
-class handlerDingCai:
+class SetDingCai:
 	def GET(self,id,n):
-		if base.isRefuseIP(web.ctx.ip):
-			raise web.seeother(config.url+"/404")
 		id = int(id)
 		n = int(n)
 		if not id:

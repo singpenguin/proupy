@@ -3,7 +3,7 @@ var xmlHttp;
 function ding_cai_clickHandler(n)
 {
 	var thisurl = location.href;
-	var url="/set_ding_cai/";
+	var url="/setDingCai/";
 	pid = thisurl.substring(thisurl.lastIndexOf("/")+1, thisurl.length);
 	var saveid = GetCookie("diggid");
 	if(saveid != null){
