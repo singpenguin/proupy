@@ -19,11 +19,11 @@ render = web.template.render('templates', cache=True)
 web.config.debug = False
 
 config = web.storage(
-    email='proupy@163.com',
-    url = 'http://localhost:8080',
-    site_name = 'Test',
-    static = '/static',
-    title= '',
+	email='proupy@163.com',
+	url = 'http://localhost:8080',
+	site_name = 'Test',
+	static = '/static',
+	title= '',
 )
 
 
