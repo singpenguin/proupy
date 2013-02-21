@@ -42,10 +42,5 @@ urls = (
 	'/admin/netart/new',					pre_fix + 'polity.New',
 	'/admin/generatesitemap',				pre_fix + 'admin.GenerateSitemap',
 
-	'/(zhicheng95|skyinwell|botaokk001)',	pre_fix + 'polity.Index',
-	'/polity/(\d+)',						pre_fix + 'polity.ArticleView',
-	'/(zhicheng95|skyinwell|botaokk001)/page/(\d+)',	pre_fix + 'polity.ArticlePage',
-	'/polity/(\d+)/comment',				pre_fix + 'polity.ArticleComment',
-
 	'/(.*)',								pre_fix + 'main.other',
 )
