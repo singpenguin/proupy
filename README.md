@@ -1,4 +1,4 @@
 proupy
 ======
 
-a python and mongodb blog
+a python and mysql blog
