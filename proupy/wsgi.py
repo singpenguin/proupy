@@ -47,10 +47,11 @@ class Application:
 				start_response(handle.response.status, handle.response.headers)
 				if hasattr(result, "next"):
 					for x in result:
-						yield x
+						yield safestr(x)
 				else:
 					yield safestr(result)
 				handle.cleanup()
+				env.clear()
 				handle = None
 				return 
 
