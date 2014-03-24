@@ -152,6 +152,8 @@ class HTTPRequest(object):
 						if len(key_value) == 2:
 							key, value = key_value
 							self.request._cookies[key.strip()] = urllib.unquote(value.strip())
+			else:
+				self.request._cookies = {}
 		return self.request._cookies
 
 	def get_cookie(self, name, value=None):
