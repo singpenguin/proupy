@@ -12,11 +12,12 @@ class NoMethod:
 		headers = {"Content-Type": "text/html"}
 
 class HTTPRequest(object):
-	def __init__(self, environ):
+	def __init__(self, environ, render=None):
 		"""Parses the given WSGI environment to construct the request."""
 		self.request = Storage()
 		self.response = Storage()
 
+		self._render = render
 		self.request.method = environ["REQUEST_METHOD"]
 		self.request.protocol = environ["wsgi.url_scheme"]
 		self.request.remote_ip = environ.get("REMOTE_ADDR", "")
@@ -178,6 +179,10 @@ class HTTPRequest(object):
 
 	def clear_cookie(self, name, path="/", domain=None):
 		self.set_cookie(name, value="", path=path, domain=domain)
+
+	def render(self, filename, **kw):
+		self.response.headers = [("Content-Type","text/html; charset=UTF-8")]
+		return getattr(self._render, filename)(**kw)
 
 	def redirect(self, url):
 		newloc = urlparse.urljoin(self.request.path, url)

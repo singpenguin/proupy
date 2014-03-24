@@ -5,6 +5,7 @@ import re
 import traceback
 import sys
 from utils import safestr
+import template
 
 
 class Application:
@@ -13,6 +14,10 @@ class Application:
 		self.init_mapping()
 		self.settings = settings
 		self.debug = settings['debug']
+		self.render = None
+		if "template_path" in settings:
+			self.render = template.render(settings['template_path'], cache=self.debug)
+			template.Template.globals['render'] = self.render
 
 	def init_mapping(self):
 		_handlers = []
@@ -25,7 +30,7 @@ class Application:
 		for path,what in self.handlers:
 			match = path.match(env['PATH_INFO'])
 			if match:
-				handle = what(env)
+				handle = what(env, self.render)
 				args = [x for x in match.groups()]
 				try:
 					result = getattr(handle, env['REQUEST_METHOD'])(*args)
