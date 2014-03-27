@@ -12,7 +12,12 @@ class Index(proupy.web.HTTPRequest):
 	def GET(self):
 		return "Hello word"
 
-url = [("/", Index)]
+class Test(proupy.web.HTTPRequest):
+	def GET(self, arg):
+		return "Hello %s" % arg
+
+url = [("/", Index),
+		("/(.*)", Test)]
 
 
 application = proupy.wsgi.Application(url)
